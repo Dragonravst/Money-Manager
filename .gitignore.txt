@@ -1,0 +1,73 @@
+# -------------------------
+# Spring Boot / Java
+# -------------------------
+
+# Compiled class files
+*.class
+
+# Logs
+*.log
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Temporary files
+*.tmp
+*.temp
+
+# -------------------------
+# Build directories
+# -------------------------
+
+# Maven
+/target/
+
+# Gradle
+/build/
+
+# -------------------------
+# IDE / Editor
+# -------------------------
+
+# IntelliJ IDEA
+/.idea/
+/*.iml
+/out/
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+
+# VS Code
+/.vscode/
+
+# -------------------------
+# OS Files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Environment / Secrets
+# -------------------------
+# Don't push your real application properties
+/application.properties
+/application.yml
+# You can push an example version instead
+/application.properties.example
+/application.yml.example
+
+# -------------------------
+# Spring Boot specific
+# -------------------------
+# Spring Boot DevTools restart folder
+/.restart/
+
+# -------------------------
+# Others
+# -------------------------
+*.bak
+*.swp
