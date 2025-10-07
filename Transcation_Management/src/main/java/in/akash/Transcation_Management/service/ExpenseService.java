@@ -7,8 +7,10 @@ import in.akash.Transcation_Management.io.ExpenseDTO;
 import in.akash.Transcation_Management.repository.CategoryRepository;
 import in.akash.Transcation_Management.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -75,5 +77,28 @@ public class ExpenseService {
            throw new RuntimeException("Unauthorized to delete this message");
        }
        expenseRepository.delete(entity);
+    }
+
+    public List<ExpenseDTO> getLatestFiveExpensesForCurrentUser(){
+        ProfileEntity profile=profileService.getCurrentProfile();
+        List<ExpenseEntity> list= expenseRepository.findByProfileIdOrderByDateDesc(profile.getId());
+        return list.stream().map(this::toDTO).toList();
+    }
+
+    public BigDecimal getTotalExpensesForCurrentUser(){
+        ProfileEntity profile=profileService.getCurrentProfile();
+        BigDecimal total=expenseRepository.findTotalExpenseByProfileId(profile.getId());
+        return total!=null?total:BigDecimal.ZERO;
+    }
+
+    public List<ExpenseDTO> filterExpenses(LocalDate startDate, LocalDate endDate, String keyword, Sort sort){
+        ProfileEntity profile=profileService.getCurrentProfile();
+        List<ExpenseEntity> list=expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(),startDate,endDate,keyword,sort);
+       return list.stream().map(this::toDTO).toList();
+    }
+
+    public List<ExpenseDTO> getExpensesForUserOnDate(Long profileId,LocalDate date){
+        List<ExpenseEntity> list=expenseRepository.findByProfileIdAndDate(profileId,date);
+        return list.stream().map(this::toDTO).toList();
     }
 }

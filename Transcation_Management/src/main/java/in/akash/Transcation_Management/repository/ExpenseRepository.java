@@ -1,6 +1,7 @@
 package in.akash.Transcation_Management.repository;
 
 import in.akash.Transcation_Management.entity.ExpenseEntity;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity,Long> {
    List<ExpenseEntity>  findTopFiveByProfileIdOrderByDateDesc(Long profileId);
 
    @Query("SELECT SUM(e.amount) FROM  ExpenseEntity  e WHERE e.profile.id=:profileID")
-   BigDecimal findTotalExpenseByProfileId(@Param("profile_id")Long profileId);
+   BigDecimal findTotalExpenseByProfileId(@Param("profileID")Long profileId);
 
    List<ExpenseEntity> findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
          Long profileId,
@@ -28,4 +29,6 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity,Long> {
    );
 
    List<ExpenseEntity> findByProfileIdAndDateBetween(Long profileId,LocalDate startDate,LocalDate endDate);
+
+  List<ExpenseEntity> findByProfileIdAndDate(Long profileId, LocalDate date);
 }
