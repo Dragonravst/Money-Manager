@@ -15,7 +15,7 @@ public class BrevoTestRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         try {
             // Replace with your own email to test
-            String testRecipient = "your-email@example.com";
+            String testRecipient = "ravst.rb@gmail.com";
             String subject = "Test Email from Brevo API";
             String body = "<h1>This is a test email</h1><p>If you receive this, your Brevo API works!</p>";
 
