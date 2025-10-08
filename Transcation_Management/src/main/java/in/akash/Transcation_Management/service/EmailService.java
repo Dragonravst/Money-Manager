@@ -1,31 +1,41 @@
 package in.akash.Transcation_Management.service;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${spring.mail.properties.mail.smtp.from}")
+    @Value("${BREVO_API_KEY}")
+    private String apiKey;
+
+    @Value("${BREVO_FROM_EMAIL}")
     private String fromEmail;
 
-    public void sendEmail(String to, String subject, String body) {
-        try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromEmail);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(body);
-            mailSender.send(message);
-        }catch(Exception e){
-            throw new RuntimeException(e.getMessage());
-        }
+    public void sendEmail(String to, String subject, String htmlBody) {
+        String url = "https://api.brevo.com/v3/smtp/email";
+
+        Map<String, Object> payload = Map.of(
+                "sender", Map.of("email", fromEmail),
+                "to", new Map[]{Map.of("email", to)},
+                "subject", subject,
+                "htmlContent", htmlBody
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("api-key", apiKey);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
+
+        restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
     }
 }
