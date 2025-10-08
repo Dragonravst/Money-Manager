@@ -2,7 +2,7 @@ package in.akash.Transcation_Management.service;
 
 import in.akash.Transcation_Management.entity.ProfileEntity;
 import in.akash.Transcation_Management.io.ExpenseDTO;
-import in.akash.Transcation_Management.repository.ExpenseRepository;
+
 import in.akash.Transcation_Management.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+
 import java.util.List;
 
 @Service
