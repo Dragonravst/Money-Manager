@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class EmailService {
 
         Map<String, Object> payload = Map.of(
                 "sender", Map.of("email", fromEmail),
-                "to", List.of(Map.of("email", to)),  // use List.of instead of array
+                "to", List.of(Map.of("email", to)),
                 "subject", subject,
                 "htmlContent", htmlBody
         );
@@ -37,6 +38,16 @@ public class EmailService {
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
 
-        restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                System.err.println("Failed to send email. Response: " + response.getBody());
+            } else {
+                System.out.println("Email sent successfully to " + to);
+            }
+        } catch (RestClientException e) {
+            System.err.println("Error sending email to " + to + ": " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
