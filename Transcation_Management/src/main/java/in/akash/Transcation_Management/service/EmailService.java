@@ -6,6 +6,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,7 +26,7 @@ public class EmailService {
 
         Map<String, Object> payload = Map.of(
                 "sender", Map.of("email", fromEmail),
-                "to", new Map[]{Map.of("email", to)},
+                "to", List.of(Map.of("email", to)),  // use List.of instead of array
                 "subject", subject,
                 "htmlContent", htmlBody
         );
