@@ -72,6 +72,7 @@ public class ProfileService {
                 .map(profile->{
                     profile.setIsActive(true);
                     profileRepository.save(profile);
+                    System.out.println("✅ Profile activated for token: " + activationToken);
                     return true;
                 })
                 .orElse(false);
