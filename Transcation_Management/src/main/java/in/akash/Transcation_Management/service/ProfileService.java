@@ -68,14 +68,18 @@ public class ProfileService {
 
     @Transactional
     public boolean activateProfile(String activationToken) {
-        return profileRepository.findByActivationToken(activationToken)
-                .map(profile->{
-                    profile.setIsActive(true);
-                    profileRepository.save(profile);
-                    System.out.println("✅ Profile activated for token: " + activationToken);
-                    return true;
-                })
-                .orElse(false);
+        ProfileEntity profile = profileRepository.findByActivationToken(activationToken)
+                .orElse(null);
+
+        if (profile == null) return false;
+
+        profile.setIsActive(true);
+        System.out.println("✅ Profile activated for token: " + activationToken);
+
+
+        profileRepository.flush();
+
+        return true;
     }
 
     public boolean isAccountActive(String email){
