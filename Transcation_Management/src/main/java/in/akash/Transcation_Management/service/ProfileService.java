@@ -74,10 +74,11 @@ public class ProfileService {
         if (profile == null) return false;
 
         profile.setIsActive(true);
+        profileRepository.flush();
         System.out.println("✅ Profile activated for token: " + activationToken);
 
 
-        profileRepository.flush();
+
 
         return true;
     }
