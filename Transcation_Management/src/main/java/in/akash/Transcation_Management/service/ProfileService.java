@@ -5,6 +5,7 @@ import in.akash.Transcation_Management.io.AuthDTO;
 import in.akash.Transcation_Management.io.ProfileDTO;
 import in.akash.Transcation_Management.repository.ProfileRepository;
 import in.akash.Transcation_Management.util.JwtUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,6 +66,7 @@ public class ProfileService {
                 .build();
     }
 
+    @Transactional
     public boolean activateProfile(String activationToken) {
         return profileRepository.findByActivationToken(activationToken)
                 .map(profile->{
